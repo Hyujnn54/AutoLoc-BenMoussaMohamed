@@ -56,6 +56,29 @@ public class VehiculeController {
         }
     }
 
+    @Operation(summary = "Retirer un véhicule de son agence",
+            description = "Retire l'agence associée au véhicule sans supprimer le véhicule.")
+    @DeleteMapping("/{vehiculeId}/agence")
+    public ResponseEntity<Vehicule> removeFromAgence(@PathVariable Long vehiculeId) {
+        try {
+            return ResponseEntity.ok(vehiculeService.removeFromAgence(vehiculeId));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Changer l'agence d'un véhicule",
+            description = "Affecte un véhicule à une autre agence existante.")
+    @PutMapping("/{vehiculeId}/agence/change/{newAgenceId}")
+    public ResponseEntity<Vehicule> changeAgence(@PathVariable Long vehiculeId,
+                                                   @PathVariable Long newAgenceId) {
+        try {
+            return ResponseEntity.ok(vehiculeService.changeAgence(vehiculeId, newAgenceId));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @Operation(summary = "Supprimer un véhicule par son ID", description = "Supprime un véhicule existant en utilisant son ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> supprimerVehicule(@PathVariable Long id) {

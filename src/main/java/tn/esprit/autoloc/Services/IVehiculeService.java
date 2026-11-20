@@ -18,4 +18,8 @@ public interface IVehiculeService {
     void supprimerVehicule(Long id);
 
     Vehicule assignToAgence(Long vehiculeId, Long agenceId);
+
+    Vehicule removeFromAgence(Long vehiculeId);
+
+    Vehicule changeAgence(Long vehiculeId, Long newAgenceId);
 }

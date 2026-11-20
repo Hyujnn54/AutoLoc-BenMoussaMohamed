@@ -81,4 +81,24 @@ public class VehiculeServiceImpl implements IVehiculeService {
         vehicule.setAgence(agence);
         return vehiculeRepository.save(vehicule);
     }
+
+    @Override
+    public Vehicule removeFromAgence(Long vehiculeId) {
+        Vehicule vehicule = getVehiculeById(vehiculeId)
+                .orElseThrow(() -> new IllegalArgumentException("Véhicule introuvable avec l'id " + vehiculeId));
+
+        vehicule.setAgence(null);
+        return vehiculeRepository.save(vehicule);
+    }
+
+    @Override
+    public Vehicule changeAgence(Long vehiculeId, Long newAgenceId) {
+        Vehicule vehicule = getVehiculeById(vehiculeId)
+                .orElseThrow(() -> new IllegalArgumentException("Véhicule introuvable avec l'id " + vehiculeId));
+        Agence newAgence = agenceRepository.findById(newAgenceId)
+                .orElseThrow(() -> new IllegalArgumentException("Agence introuvable avec l'id " + newAgenceId));
+
+        vehicule.setAgence(newAgence);
+        return vehiculeRepository.save(vehicule);
+    }
 }
