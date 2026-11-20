@@ -72,4 +72,43 @@ public class EquipementServiceImpl implements IEquipementService {
         vehiculeRepository.save(vehicule);
         return equipementRepository.save(equipement);
     }
+
+    @Override
+    public Equipement removeFromVehicule(Long equipementId, Long vehiculeId) {
+        Equipement equipement = equipementRepository.findById(equipementId)
+                .orElseThrow(() -> new IllegalArgumentException("Équipement introuvable avec l'id " + equipementId));
+        Vehicule vehicule = vehiculeRepository.findById(vehiculeId)
+                .orElseThrow(() -> new IllegalArgumentException("Véhicule introuvable avec l'id " + vehiculeId));
+
+        if (!vehicule.getEquipements().remove(equipement)) {
+            throw new IllegalArgumentException("L'équipement n'est pas affecté à ce véhicule");
+        }
+
+        equipement.getVehicules().remove(vehicule);
+        vehiculeRepository.save(vehicule);
+        return equipementRepository.save(equipement);
+    }
+
+    @Override
+    public Equipement changeVehiculeEquipement(Long oldEquipementId, Long newEquipementId, Long vehiculeId) {
+        Equipement oldEquipement = equipementRepository.findById(oldEquipementId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Équipement introuvable avec l'id " + oldEquipementId));
+        Equipement newEquipement = equipementRepository.findById(newEquipementId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Équipement introuvable avec l'id " + newEquipementId));
+        Vehicule vehicule = vehiculeRepository.findById(vehiculeId)
+                .orElseThrow(() -> new IllegalArgumentException("Véhicule introuvable avec l'id " + vehiculeId));
+
+        if (!vehicule.getEquipements().remove(oldEquipement)) {
+            throw new IllegalArgumentException("L'ancien équipement n'est pas affecté à ce véhicule");
+        }
+
+        oldEquipement.getVehicules().remove(vehicule);
+        vehicule.getEquipements().add(newEquipement);
+        newEquipement.getVehicules().add(vehicule);
+        vehiculeRepository.save(vehicule);
+        equipementRepository.save(oldEquipement);
+        return equipementRepository.save(newEquipement);
+    }
 }

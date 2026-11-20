@@ -76,4 +76,28 @@ public class EquipementController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "Retirer un équipement d'un véhicule")
+    @PutMapping("/{equipementId}/vehicule/{vehiculeId}/remove")
+    public ResponseEntity<Equipement> removeFromVehicule(@PathVariable Long equipementId,
+                                                         @PathVariable Long vehiculeId) {
+        try {
+            return ResponseEntity.ok(equipementService.removeFromVehicule(equipementId, vehiculeId));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Remplacer un équipement sur un véhicule")
+    @PutMapping("/{oldEquipementId}/vehicule/{vehiculeId}/change/{newEquipementId}")
+    public ResponseEntity<Equipement> changeVehiculeEquipement(@PathVariable Long oldEquipementId,
+                                                               @PathVariable Long vehiculeId,
+                                                               @PathVariable Long newEquipementId) {
+        try {
+            return ResponseEntity.ok(equipementService.changeVehiculeEquipement(
+                    oldEquipementId, newEquipementId, vehiculeId));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

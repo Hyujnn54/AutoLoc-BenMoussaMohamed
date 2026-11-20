@@ -18,4 +18,8 @@ public interface IEquipementService {
     void supprimerEquipement(Long id);
 
     Equipement assignToVehicule(Long equipementId, Long vehiculeId);
+
+    Equipement removeFromVehicule(Long equipementId, Long vehiculeId);
+
+    Equipement changeVehiculeEquipement(Long oldEquipementId, Long newEquipementId, Long vehiculeId);
 }
