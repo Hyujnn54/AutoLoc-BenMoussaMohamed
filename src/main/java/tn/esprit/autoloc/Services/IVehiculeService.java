@@ -16,4 +16,6 @@ public interface IVehiculeService {
     Vehicule modifierVehicule(Vehicule vehicule, Long id);
 
     void supprimerVehicule(Long id);
+
+    Vehicule assignToAgence(Long vehiculeId, Long agenceId);
 }

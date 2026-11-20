@@ -44,6 +44,18 @@ public class VehiculeController {
         return ResponseEntity.ok(vehiculeService.modifierVehicule(vehicule, id));
     }
 
+    @Operation(summary = "Affecter un véhicule à une agence",
+            description = "Affecte un véhicule existant à une agence existante.")
+    @PutMapping("/{vehiculeId}/agence/{agenceId}")
+    public ResponseEntity<Vehicule> assignToAgence(@PathVariable Long vehiculeId,
+                                                    @PathVariable Long agenceId) {
+        try {
+            return ResponseEntity.ok(vehiculeService.assignToAgence(vehiculeId, agenceId));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @Operation(summary = "Supprimer un véhicule par son ID", description = "Supprime un véhicule existant en utilisant son ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> supprimerVehicule(@PathVariable Long id) {

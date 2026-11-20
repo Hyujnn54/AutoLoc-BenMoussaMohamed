@@ -3,7 +3,9 @@ package tn.esprit.autoloc.Services.impls;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.Services.IVehiculeService;
+import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.domain.Vehicule;
+import tn.esprit.autoloc.repository.AgenceRepository;
 import tn.esprit.autoloc.repository.VehiculeRepository;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class VehiculeServiceImpl implements IVehiculeService {
 
     private final VehiculeRepository vehiculeRepository;
+    private final AgenceRepository agenceRepository;
 
     @Override
     public Vehicule addVehicule(Vehicule vehicule) {
@@ -66,5 +69,16 @@ public class VehiculeServiceImpl implements IVehiculeService {
                 .orElseThrow(() -> new IllegalArgumentException("Véhicule introuvable avec l'id " + id));
 
         vehiculeRepository.delete(vehicule);
+    }
+
+    @Override
+    public Vehicule assignToAgence(Long vehiculeId, Long agenceId) {
+        Vehicule vehicule = getVehiculeById(vehiculeId)
+                .orElseThrow(() -> new IllegalArgumentException("Véhicule introuvable avec l'id " + vehiculeId));
+        Agence agence = agenceRepository.findById(agenceId)
+                .orElseThrow(() -> new IllegalArgumentException("Agence introuvable avec l'id " + agenceId));
+
+        vehicule.setAgence(agence);
+        return vehiculeRepository.save(vehicule);
     }
 }
