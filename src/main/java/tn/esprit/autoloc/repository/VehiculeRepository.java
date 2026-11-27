@@ -4,6 +4,7 @@ import tn.esprit.autoloc.domain.CategorieVehicule;
 import tn.esprit.autoloc.domain.StatutReservation;
 import tn.esprit.autoloc.domain.StatutVehicule;
 import tn.esprit.autoloc.domain.Vehicule;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +17,14 @@ import java.util.Optional;
 
 @Repository
 public interface VehiculeRepository extends JpaRepository<Vehicule, Long> {
+
+    @Override
+    @EntityGraph(attributePaths = "agence")
+    List<Vehicule> findAll();
+
+    @Override
+    @EntityGraph(attributePaths = "agence")
+    Optional<Vehicule> findById(Long id);
 
     Optional<Vehicule> findByImmatriculation(String immatriculation);
 

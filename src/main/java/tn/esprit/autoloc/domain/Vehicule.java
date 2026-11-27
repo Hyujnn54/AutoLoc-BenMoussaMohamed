@@ -46,7 +46,7 @@ public class Vehicule {
     @JsonBackReference
     private Agence agence;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "vehicule_equipement",
             joinColumns = @JoinColumn(name = "vehicule_id"),
